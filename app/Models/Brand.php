@@ -10,6 +10,13 @@ class Brand extends Model
 
     public function models()
     {
-        return $this->hasMany(Model::class);
+        return $this->hasMany(CarModel::class);
+    }
+
+    public function agents()
+    {
+        return $this->belongsToMany(Agent::class, 'agent_brands')
+            ->withPivot('is_active')
+            ->withTimestamps();
     }
 }

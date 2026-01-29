@@ -45,14 +45,15 @@ class UserForm
                             ->columnSpan(1)
                             ->helperText('Leave blank to keep current password when editing'),
 
-                        Select::make('role_id')
-                            ->label('Role')
-                            ->relationship('role', 'name')
+                        Select::make('roles')
+                            ->label('Roles')
+                            ->relationship('roles', 'name')
+                            ->multiple()
                             ->required()
                             ->searchable()
                             ->preload()
                             ->columnSpan(1)
-                            ->helperText('Select the user role'),
+                            ->helperText('Select one or more roles'),
 
                         DateTimePicker::make('email_verified_at')
                             ->label('Email Verified At')

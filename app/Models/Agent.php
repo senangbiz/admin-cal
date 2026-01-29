@@ -20,4 +20,11 @@ class Agent extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class, 'agent_brands')
+            ->withPivot('is_active')
+            ->withTimestamps();
+    }
 }

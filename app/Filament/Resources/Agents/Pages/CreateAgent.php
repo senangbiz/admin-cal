@@ -33,8 +33,9 @@ class CreateAgent extends CreateRecord
                 'name' => $data['new_user_name'],
                 'email' => $data['new_user_email'],
                 'password' => Hash::make($data['new_user_password']),
-                'role_id' => $agentRole->id,
             ]);
+
+            $user->roles()->attach($agentRole->id);
 
             // Set the user_id for the agent
             $data['user_id'] = $user->id;

@@ -22,16 +22,16 @@ class UsersTable
                     ->label('Email Address')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('role.name')
-                    ->label('Role')
+                TextColumn::make('roles')
+                    ->label('Roles')
+                    ->formatStateUsing(fn ($record) => $record->roles->pluck('name')->join(', '))
                     ->badge()
-                    ->color(fn ($record) => match($record->role?->slug) {
+                    ->color(fn ($record) => match($record->roles->first()?->slug) {
                         'admin' => 'danger',
                         'agent' => 'warning',
                         'user' => 'gray',
                         default => 'gray',
-                    })
-                    ->sortable(),
+                    }),
                 TextColumn::make('email_verified_at')
                     ->label('Verified')
                     ->dateTime()
