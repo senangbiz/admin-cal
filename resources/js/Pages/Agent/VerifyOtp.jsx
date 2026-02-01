@@ -87,6 +87,13 @@ export default function VerifyOtp({ email }) {
           </CardHeader>
           <form onSubmit={onSubmit}>
             <CardContent className="space-y-6">
+              <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-200">
+                <span className="font-medium">Demo:</span> Use code{' '}
+                <code className="rounded bg-blue-100 px-1.5 py-0.5 font-mono font-semibold dark:bg-blue-900/50">
+                  123456
+                </code>{' '}
+                to verify.
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="otp-0" className="sr-only">
                   OTP Code

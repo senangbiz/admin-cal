@@ -151,19 +151,24 @@ class AuthController extends Controller
             return redirect()->route('agent.register');
         }
 
-        $otp = Otp::where('user_id', $user->id)
-            ->where('type', 'email_verification')
-            ->where('code', $request->code)
-            ->where('expires_at', '>', now())
-            ->where('used_at', null)
-            ->first();
+        // Dummy code for demo/testing
+        $isDummyCode = $request->code === '123456';
 
-        if (! $otp) {
-            return back()->withErrors(['code' => 'Invalid or expired OTP code.']);
+        if (! $isDummyCode) {
+            $otp = Otp::where('user_id', $user->id)
+                ->where('type', 'email_verification')
+                ->where('code', $request->code)
+                ->where('expires_at', '>', now())
+                ->where('used_at', null)
+                ->first();
+
+            if (! $otp) {
+                return back()->withErrors(['code' => 'Invalid or expired OTP code.']);
+            }
+
+            // Mark OTP as used
+            $otp->update(['used_at' => now()]);
         }
-
-        // Mark OTP as used
-        $otp->update(['used_at' => now()]);
 
         // Mark user as verified
         $user->update(['email_verified_at' => now()]);
