@@ -46,10 +46,12 @@ class ModelForm
                         FileUpload::make('image')
                             ->label('Image')
                             ->required()
+                            ->disk('public')
+                            ->directory('models')
                             ->maxFiles(1)
                             ->maxSize(1024)
                             ->columnSpan('full')
-                            ->helperText('The image of the model'),
+                            ->helperText('The image of the model (stored in public storage for the agent loan calculator).'),
 
                         Textarea::make('description')
                             ->label('Description')

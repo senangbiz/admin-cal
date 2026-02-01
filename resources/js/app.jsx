@@ -2,6 +2,7 @@ import './bootstrap';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 createInertiaApp({
     resolve: (name) => {
@@ -14,6 +15,10 @@ createInertiaApp({
         return loader();
     },
     setup({ el, App, props }) {
-        createRoot(el).render(<App {...props} />);
+        createRoot(el).render(
+            <ThemeProvider>
+                <App {...props} />
+            </ThemeProvider>
+        );
     },
 });

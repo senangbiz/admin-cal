@@ -66,7 +66,8 @@ class VariantForm
 
                 FileUpload::make('image')
                     ->image()
-                    ->directory('products')
+                    ->disk('public')
+                    ->directory('variants')
                     ->imagePreviewHeight('200')
                     ->maxSize(2048)
                     ->nullable(),

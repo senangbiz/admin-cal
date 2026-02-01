@@ -23,10 +23,12 @@ class BrandForm
                 FileUpload::make('logo')
                     ->label('Logo')
                     ->required()
+                    ->disk('public')
+                    ->directory('brands')
                     ->maxFiles(1)
                     ->maxSize(1024)
                     ->columnSpan('full')
-                    ->helperText('The logo of the brand'),
+                    ->helperText('The logo of the brand (stored in public storage so it can be shown on the agent loan calculator).'),
                     
                 TextInput::make('name')
                     ->label('Name')
