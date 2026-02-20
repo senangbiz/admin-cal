@@ -33,13 +33,12 @@ class AdminSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => Hash::make('password'),
-                'role_id' => $adminRole->id,
             ]
         );
 
-        // Update role_id if user exists but doesn't have the admin role
-        if ($user->role_id !== $adminRole->id) {
-            $user->update(['role_id' => $adminRole->id]);
+        // Ensure user has admin role
+        if (! $user->hasRole('admin')) {
+            $user->roles()->attach($adminRole->id);
         }
     }
 }

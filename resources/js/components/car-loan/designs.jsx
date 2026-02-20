@@ -225,21 +225,25 @@ export function ClassicLayout(props) {
                     <Label htmlFor="interest-rate" className="text-sm sm:text-base font-semibold">
                       Interest Rate (APR)
                     </Label>
-                    <Select
-                      value={String(props.interestRatePercent)}
-                      onValueChange={(v) => props.onInterestRateChange?.(v)}
-                    >
-                      <SelectTrigger id="interest-rate" className="h-10 sm:h-12 text-sm sm:text-base border-2 w-full max-w-[200px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Array.from({ length: 15 }, (_, i) => i + 1).map((p) => (
-                          <SelectItem key={p} value={String(p)} className="text-base">
-                            {p}%
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="relative w-full max-w-[200px]">
+                      <Input
+                        id="interest-rate"
+                        type="number"
+                        min={1}
+                        max={20}
+                        step={0.1}
+                        value={props.interestRatePercent ?? ''}
+                        onChange={(e) => {
+                          const v = e.target.value
+                          if (v !== '') props.onInterestRateChange?.(v)
+                        }}
+                        className="pr-8"
+                        placeholder="e.g. 2.3"
+                      />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted-foreground pointer-events-none">
+                        %
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -340,7 +344,7 @@ export function CompactLayout(props) {
                     Model
                   </Label>
                   <Select value={props.selectedCar} onValueChange={props.setSelectedCar}>
-                    <SelectTrigger className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full">
+                    <SelectTrigger className="h-10 sm:h-11 text-sm border border-border/50 bg-background w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -358,7 +362,7 @@ export function CompactLayout(props) {
                     Variant
                   </Label>
                   <Select value={props.selectedVariant} onValueChange={props.setSelectedVariant}>
-                    <SelectTrigger className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full">
+                    <SelectTrigger className="h-10 sm:h-11 text-sm border border-border/50 bg-background w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -384,7 +388,7 @@ export function CompactLayout(props) {
                       type="text"
                       value={props.formatNumberWithCommas(props.loanAmount)}
                       onChange={(e) => props.handleLoanAmountChange(e.target.value)}
-                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input"
+                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background"
                       placeholder="30,000"
                     />
                   </div>
@@ -401,7 +405,7 @@ export function CompactLayout(props) {
                       type="text"
                       value={props.formatNumberWithCommas(props.downPayment)}
                       onChange={(e) => props.handleDownPaymentChange(e.target.value)}
-                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input"
+                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background"
                       placeholder="5,000"
                     />
                   </div>
@@ -420,7 +424,7 @@ export function CompactLayout(props) {
                       type="text"
                       value={props.formatNumberWithCommas(props.rebateAmount)}
                       onChange={(e) => props.handleRebateAmountChange(e.target.value)}
-                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input"
+                      className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background"
                       placeholder="0"
                     />
                   </div>
@@ -446,18 +450,25 @@ export function CompactLayout(props) {
                   <Label htmlFor="interest-rate-compact" className="text-xs sm:text-sm font-medium text-muted-foreground">
                     Interest Rate (APR)
                   </Label>
-                  <Select value={String(props.interestRatePercent)} onValueChange={(v) => props.onInterestRateChange?.(v)}>
-                    <SelectTrigger id="interest-rate-compact" className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full max-w-[180px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 15 }, (_, i) => i + 1).map((p) => (
-                        <SelectItem key={p} value={String(p)}>
-                          {p}%
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="relative w-full max-w-[180px]">
+                    <Input
+                      id="interest-rate-compact"
+                      type="number"
+                      min={1}
+                      max={20}
+                      step={0.1}
+                      value={props.interestRatePercent ?? ''}
+                      onChange={(e) => {
+                        const v = e.target.value
+                        if (v !== '') props.onInterestRateChange?.(v)
+                      }}
+                      className="pr-8"
+                      placeholder="e.g. 2.3"
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted-foreground pointer-events-none">
+                      %
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -558,7 +569,7 @@ export function SplitLayout(props) {
                         Model
                       </Label>
                       <Select value={props.selectedCar} onValueChange={props.setSelectedCar}>
-                        <SelectTrigger id="car-type" className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full">
+                        <SelectTrigger id="car-type" className="h-10 sm:h-11 text-sm border border-border/50 bg-background w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -576,7 +587,7 @@ export function SplitLayout(props) {
                         Variant
                       </Label>
                       <Select value={props.selectedVariant} onValueChange={props.setSelectedVariant}>
-                        <SelectTrigger id="car-variant" className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full">
+                        <SelectTrigger id="car-variant" className="h-10 sm:h-11 text-sm border border-border/50 bg-background w-full">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -607,7 +618,7 @@ export function SplitLayout(props) {
                             type="text"
                             value={props.formatNumberWithCommas(props.loanAmount)}
                             onChange={(e) => props.handleLoanAmountChange(e.target.value)}
-                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input w-full"
+                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background w-full"
                             placeholder="30,000"
                           />
                         </div>
@@ -624,7 +635,7 @@ export function SplitLayout(props) {
                             type="text"
                             value={props.formatNumberWithCommas(props.downPayment)}
                             onChange={(e) => props.handleDownPaymentChange(e.target.value)}
-                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input w-full"
+                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background w-full"
                             placeholder="5,000"
                           />
                         </div>
@@ -643,7 +654,7 @@ export function SplitLayout(props) {
                             type="text"
                             value={props.formatNumberWithCommas(props.rebateAmount)}
                             onChange={(e) => props.handleRebateAmountChange(e.target.value)}
-                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-input w-full"
+                            className="pl-12 h-10 sm:h-11 text-sm border border-border/50 bg-background w-full"
                             placeholder="0"
                           />
                         </div>
@@ -669,18 +680,25 @@ export function SplitLayout(props) {
                         <Label htmlFor="interest-rate-split" className="text-xs sm:text-sm font-medium text-muted-foreground">
                           Interest Rate (APR)
                         </Label>
-                        <Select value={String(props.interestRatePercent)} onValueChange={(v) => props.onInterestRateChange?.(v)}>
-                          <SelectTrigger id="interest-rate-split" className="h-10 sm:h-11 text-sm border border-border/50 bg-input w-full max-w-[180px]">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Array.from({ length: 15 }, (_, i) => i + 1).map((p) => (
-                              <SelectItem key={p} value={String(p)}>
-                                {p}%
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="relative w-full max-w-[180px]">
+                          <Input
+                            id="interest-rate-split"
+                            type="number"
+                            min={1}
+                            max={20}
+                            step={0.1}
+                            value={props.interestRatePercent ?? ''}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              if (v !== '') props.onInterestRateChange?.(v)
+                            }}
+                            className="pr-8"
+                            placeholder="e.g. 2.3"
+                          />
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-muted-foreground pointer-events-none">
+                            %
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

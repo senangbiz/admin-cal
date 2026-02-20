@@ -35,7 +35,7 @@ export function CarLoanCalculator({
   const [totalLoanAmount, setTotalLoanAmount] = useState(0)
   const [designMode, setDesignMode] = useState('classic')
   const [interestRatePercent, setInterestRatePercent] = useState(() =>
-    Math.min(15, Math.max(1, Math.round(DEFAULT_APR)))
+    Math.min(20, Math.max(1, parseFloat(DEFAULT_APR)))
   )
 
   const effectiveBrandId = selectedBrandId ?? (agentBrands[0]?.id != null ? String(agentBrands[0].id) : null)
@@ -66,9 +66,9 @@ export function CarLoanCalculator({
   useEffect(() => {
     const carApr = selectedCarData?.apr != null ? Number(selectedCarData.apr) : null
     const value =
-      carApr != null && carApr >= 1 && carApr <= 15
-        ? Math.round(carApr)
-        : Math.min(15, Math.max(1, Math.round(DEFAULT_APR)))
+      carApr != null && carApr >= 1 && carApr <= 20
+        ? parseFloat(carApr.toFixed(1))
+        : Math.min(20, Math.max(1, parseFloat(DEFAULT_APR)))
     setInterestRatePercent(value)
   }, [selectedCar, selectedCarData?.apr])
 
@@ -157,7 +157,10 @@ export function CarLoanCalculator({
     computedLoanAmount,
     totalLoanAmount,
     interestRatePercent,
-    onInterestRateChange: (p) => setInterestRatePercent(Number(p)),
+    onInterestRateChange: (p) => {
+      const n = Number(p)
+      if (!Number.isNaN(n)) setInterestRatePercent(Math.min(20, Math.max(0.1, n)))
+    },
     formatCurrency,
     formatNumberWithCommas,
     calculateMonthlyPaymentForTenure,

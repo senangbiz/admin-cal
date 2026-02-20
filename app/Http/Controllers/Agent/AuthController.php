@@ -41,8 +41,9 @@ class AuthController extends Controller
 
         $user = Auth::user();
         $agentRole = Role::where('slug', 'agent')->first();
+        $isAgent = $agentRole && ($user->hasRole('agent') || $user->agent()->exists());
 
-        if (! $agentRole || ! $user->hasRole('agent')) {
+        if (! $isAgent) {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

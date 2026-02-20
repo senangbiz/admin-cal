@@ -73,8 +73,12 @@ class DashboardController extends Controller
         if (str_starts_with($path, 'http')) {
             return $path;
         }
-
-        return asset('storage/'.$path);
+        // Filament uploads go to storage/app/public/brands/ → served at /storage/brands/...
+        if (str_starts_with($path, 'brands/')) {
+            return asset('storage/'.$path);
+        }
+        // Seeder/default logos in public/images/logo/ → served at /images/logo/...
+        return asset($path);
     }
 
     private function imageUrl(string $path): string
@@ -82,7 +86,7 @@ class DashboardController extends Controller
         if (str_starts_with($path, 'http')) {
             return $path;
         }
-
+        // Model images from Filament go to storage/app/public/models/ → served at /storage/models/...
         return asset('storage/'.$path);
     }
 }
