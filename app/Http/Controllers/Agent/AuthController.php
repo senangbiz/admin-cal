@@ -67,11 +67,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            // Step 1 - User
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            // Step 2 - Agent
             'phone' => ['required', 'string', 'max:50'],
             'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'showroom_location' => ['required', 'string', 'max:255'],
@@ -85,7 +83,6 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Agent role not configured.'])->withInput();
         }
 
-        // Handle profile photo upload
         $profilePhotoPath = null;
         if ($request->hasFile('profile_photo')) {
             $profilePhotoPath = $request->file('profile_photo')->store('agents/photos', 'public');
@@ -105,18 +102,15 @@ class AuthController extends Controller
             'profile_photo' => $profilePhotoPath,
             'showroom_location' => $validated['showroom_location'] ?? null,
             'coverage_areas' => $validated['coverage_areas'] ?? null,
-            'is_active' => false, // Inactive until OTP verified
+            'is_active' => false,
         ]);
 
-        // Attach single brand
         $agent->brands()->attach($validated['brand_id'], ['is_active' => true]);
 
-        // Generate and send OTP
         $otp = Otp::generate($user, 'email_verification');
 
         Mail::to($user->email)->send(new OTPMail($otp));
 
-        // Store user ID in session for OTP verification
         $request->session()->put('otp_user_id', $user->id);
 
         return redirect()->route('agent.otp.verify');
@@ -151,7 +145,6 @@ class AuthController extends Controller
             return redirect()->route('agent.register');
         }
 
-        // Dummy code for demo/testing
         $isDummyCode = $request->code === '123456';
 
         if (! $isDummyCode) {
@@ -166,17 +159,13 @@ class AuthController extends Controller
                 return back()->withErrors(['code' => 'Invalid or expired OTP code.']);
             }
 
-            // Mark OTP as used
             $otp->update(['used_at' => now()]);
         }
 
-        // Mark user as verified
         $user->update(['email_verified_at' => now()]);
 
-        // Activate agent
         $user->agent?->update(['is_active' => true]);
 
-        // Clear session and login
         session()->forget('otp_user_id');
         Auth::login($user);
         $request->session()->regenerate();
@@ -196,13 +185,11 @@ class AuthController extends Controller
             return redirect()->route('agent.register');
         }
 
-        // Invalidate previous OTPs
         Otp::where('user_id', $user->id)
             ->where('type', 'email_verification')
             ->whereNull('used_at')
             ->update(['used_at' => now()]);
 
-        // Generate new OTP
         $otp = Otp::generate($user, 'email_verification');
 
         Mail::to($user->email)->send(new OTPMail($otp));
