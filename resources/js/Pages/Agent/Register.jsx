@@ -410,7 +410,7 @@ export default function AgentRegister({ brands = [] }) {
               <p className="text-center text-sm text-muted-foreground">
                 Already have an agent account?{' '}
                 <Link
-                  href="/agent/login"
+                  href="/"
                   className="text-primary font-medium underline-offset-4 hover:underline"
                 >
                   Sign in

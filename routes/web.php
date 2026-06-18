@@ -6,24 +6,18 @@ use App\Http\Middleware\RedirectIfAgent;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
+// Agent login is the welcome page
+Route::middleware(RedirectIfAgent::class)->group(function () {
+    Route::get('/', [AgentAuthController::class, 'showLoginForm'])->name('agent.login');
+    Route::get('/login', fn () => redirect('/'))->name('login');
 });
-
-// Canonical login route (required by Laravel auth redirect and Filament)
-Route::get('/login', fn () => redirect()->route('agent.login'))->name('login');
 
 // Agent auth (only redirect if already logged in as agent; admins can access)
 Route::middleware(RedirectIfAgent::class)->prefix('agent')->name('agent.')->group(function () {
-    Route::get('login', [AgentAuthController::class, 'showLoginForm'])->name('login');
+    Route::redirect('login', '/');
     Route::post('login', [AgentAuthController::class, 'login']);
     Route::get('register', [AgentAuthController::class, 'showRegisterForm'])->name('register');
     Route::post('register', [AgentAuthController::class, 'register']);
-
-    // OTP verification
-    Route::get('otp/verify', [AgentAuthController::class, 'showOtpForm'])->name('otp.verify');
-    Route::post('otp/verify', [AgentAuthController::class, 'verifyOtp']);
-    Route::post('otp/resend', [AgentAuthController::class, 'resendOtp'])->name('otp.resend');
 });
 
 // Agent dashboard (auth)
