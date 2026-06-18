@@ -26,7 +26,7 @@ export default function AgentLogin() {
   return (
     <>
       <Head title="Agent Login" />
-      <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-muted/30 px-4 py-8">
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-semibold">Agent Sign In</CardTitle>
@@ -98,6 +98,15 @@ export default function AgentLogin() {
             </CardFooter>
           </form>
         </Card>
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Admin?{' '}
+          <a
+            href="/admin"
+            className="text-primary font-medium underline-offset-4 hover:underline"
+          >
+            Sign in to admin panel
+          </a>
+        </p>
       </div>
     </>
   );
